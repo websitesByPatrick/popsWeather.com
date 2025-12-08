@@ -1,4 +1,6 @@
-export const getWeather = async () => {
+import { CurrentWeather } from "@/models/CurrentWeather";
+
+export const getWeather = async (): Promise<CurrentWeather | null> => {
   const params = new URLSearchParams({
     lat: "30.08",
     lon: "-95.42",
@@ -11,14 +13,15 @@ export const getWeather = async () => {
       `https://api.openweathermap.org/data/2.5/weather?${params}`
     );
 
-    if (response) {
-      const weather = await response.json();
-      console.log(weather);
-      return weather;
+    if (!response || !response.ok) {
+      console.log("Fetch failed:", response?.status);
+      return null;
     }
 
-    return null;
+    const weather = await response.json();
+    return new CurrentWeather(weather);
   } catch (error) {
     console.log("Error Message:", error);
+    return null;
   }
 };
