@@ -1,10 +1,13 @@
 import { CurrentWeather } from "@/models/CurrentWeather";
 
 export const getWeather = async (): Promise<CurrentWeather | null> => {
+  const WEATHER_KEY: string = process.env.APPID_KEY ?? "";
+  console.log(WEATHER_KEY);
+
   const params = new URLSearchParams({
     lat: "30.08",
     lon: "-95.42",
-    appid: "02ab2eb5a640250f9be96447e979f4d1",
+    appid: WEATHER_KEY,
     units: "imperial",
   });
 
